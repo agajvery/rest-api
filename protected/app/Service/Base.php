@@ -1,27 +1,29 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace app\Service;
 
 /**
- * Description of Base
- *
- * @author agajvery
+ * @author haivoronskyi.oleksandr@gmail.com
  */
 abstract class Base implements IService
 {
-    public function __construct($options)
+    /**
+     *
+     * @param array $options
+     */
+    public function __construct(array $options)
     {
         foreach ($options as $name => $value) {
             $this->$name = $value;
         }
     }
 
+    /**
+     *
+     * @param string $name
+     * @param mixed $value
+     * @throws \Exception
+     */
     public function __set($name, $value)
     {
         $methodName = 'set' . ucfirst($name);

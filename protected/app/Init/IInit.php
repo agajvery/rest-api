@@ -4,13 +4,11 @@ namespace app\Init;
 
 /**
  *
- * @author agajvery
+ * @author haivoronskyi.oleksandr@gmail.com
  */
 interface IInit
 {
-    function run();
+    public function run();
 
-    function getConfigFileName(): string;
-
-//    function getApp(): app\App\IApp;
+    public function getConfigFileName(): string;
 }

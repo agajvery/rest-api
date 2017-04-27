@@ -4,20 +4,32 @@ namespace app\Init;
 
 class Api extends Base
 {
+    /**
+     * get configuration file name
+     * @return string
+     */
     public function getConfigFileName(): string
     {
         return 'api.php';
     }
 
+    /**
+     * get application class name
+     * @return string
+     */
     public function getAppClass(): string
     {
         return \app\App\Api::class;
     }
 
+    /**
+     * call before run
+     * @return type
+     */
     protected function doRun()
     {
         $erroHandler = function ($errno, $errstr, $errfile, $errline) {$this->errroHandler($errno, $errstr, $errfile, $errline);};
-        $exceptionHandler = function (\Error $exception) {$this->exceptionHandler($exception);};
+        $exceptionHandler = function (\Throwable $exception) {$this->exceptionHandler($exception);};
 
         set_error_handler($erroHandler);
         set_exception_handler($exceptionHandler);
@@ -25,7 +37,11 @@ class Api extends Base
         return parent::doRun();
     }
 
-    private function exceptionHandler(\Error $exception)
+    /**
+     * exception handler
+     * @param \Error $exception
+     */
+    private function exceptionHandler(\Throwable $exception)
     {
         $errno = $exception->getCode();
         $errstr = $exception->getMessage();
@@ -35,10 +51,17 @@ class Api extends Base
         $this->errroHandler($errno, $errstr, $errfile, $errline);
     }
 
-    private function errroHandler($errno, $errstr, $errfile, $errline)
+    /**
+     *
+     * @param string $errno
+     * @param string $errstr
+     * @param string $errfile
+     * @param string $errline
+     */
+    private function errroHandler(string $errno, string $errstr, string $errfile, string $errline)
     {
-        $result = ['error' => $errstr];
-        if (IS_DEBUG) {
+        $result = ['error_message' => $errstr];
+        if ($this->isDebug === true) {
             $result['error_info'] = [
                 'errno' => $errno,
                 'errstr' => $errstr,
@@ -46,8 +69,8 @@ class Api extends Base
                 'errline' => $errline
             ];
         }
+        header('HTTP/1.1 503 Service Temporarily Unavailable');
         echo json_encode($result);
         exit();
-
     }
 }

@@ -1,26 +1,35 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace app\Service;
 
 /**
- * Description of Request
  *
- * @author agajvery
+ * @author haivoronskyi.oleksandr@gmail.com
  */
 class Request extends Base implements IRequest
 {
+    /**
+     * $_GET params
+     * @var array
+     */
     private $getParams = [];
-    
+
+    /**
+     * $_POST params
+     * @var array
+     */
     private $postParams = [];
 
+    /**
+     *
+     * @var string
+     */
     private $method;
 
+    /**
+     *
+     * @var string
+     */
     private $pathInfo;
 
     public function init()
@@ -31,22 +40,42 @@ class Request extends Base implements IRequest
         $this->postParams = file_get_contents('php://input');
     }
 
-    public function getParam($name, $defaultValue = null)
+    /**
+     *
+     * @param string $name
+     * @param mixed $defaultValue
+     * @return mixed
+     */
+    public function getParam(string $name, $defaultValue = null)
     {
         return $this->getParams[$name] ?? $defaultValue;
     }
 
-    public function postParam($name, $defaultValue = null)
+    /**
+     *
+     * @param string $name
+     * @param mixed $defaultValue
+     * @return mixed
+     */
+    public function postParam(string $name, $defaultValue = null)
     {
         return $this->postParams[$name] ?? $defaultValue;
     }
 
-    public function pathInfo()
+    /**
+     *
+     * @return string
+     */
+    public function pathInfo(): string
     {
         return $this->pathInfo;
     }
 
-    public function method()
+    /**
+     *
+     * @return string
+     */
+    public function method(): string
     {
         return $this->method;
     }

@@ -4,9 +4,9 @@ namespace app\Service;
 
 /**
  *
- * @author agajvery
+ * @author haivoronskyi.oleksandr@gmail.com
  */
 interface IService
 {
-    function init();
+    public function init();
 }

@@ -5,14 +5,32 @@ namespace app\Init;
 /**
  * Description of Base
  *
- * @author agajvery
+ * @author haivoronskyi.oleksandr@gmail.com
  */
 abstract class Base implements IInit
 {
+    /**
+     * path to the root directory
+     * @var string
+     */
     protected $rootDir;
 
+    /**
+     * path to the configuration directory
+     * @var string
+     */
     protected $configDirName = 'etc';
 
+    /**
+     *
+     * @var bool
+     */
+    protected $isDebug = false;
+
+    /**
+     * path to the local configuration directory
+     * @var string
+     */
     protected $configLocalDirName = 'local';
 
     protected function doRun()
@@ -24,6 +42,10 @@ abstract class Base implements IInit
     {
     }
 
+    /**
+     * return configuration
+     * @return array
+     */
     private function getConfig(): array
     {
         $config = [];
@@ -43,19 +65,32 @@ abstract class Base implements IInit
         return $config;
     }
 
+    /**
+     * get full path to the configuration file
+     * @return string
+     */
     private function pathToConfig(): string
     {
         return $this->rootDir . DIRECTORY_SEPARATOR . $this->configDirName;
     }
 
+    /**
+     * get full path to the local configuration file
+     * @return string
+     */
     private function pathToLocalConfig(): string
     {
         return $this->pathToConfig() . DIRECTORY_SEPARATOR . $this->configLocalDirName;
     }
 
-    public function __construct(string $rootDir)
+    /**
+     *
+     * @param string $rootDir path to the root directory
+     */
+    public function __construct(string $rootDir, bool $isDebug = false)
     {
         $this->rootDir = $rootDir;
+        $this->isDebug = $isDebug;
     }
 
     public final function run()
@@ -69,8 +104,4 @@ abstract class Base implements IInit
         }
         $this->afterRun();
     }
-
-
-
-
 }

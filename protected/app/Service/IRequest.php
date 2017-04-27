@@ -4,11 +4,15 @@ namespace app\Service;
 
 /**
  *
- * @author agajvery
+ * @author haivoronskyi.oleksandr@gmail.com
  */
 interface IRequest
 {
-    public function method();
+    public function method(): string;
 
-    public function pathInfo();
+    public function pathInfo(): string;
+
+    public function getParam(string $name, $defaultValue = null);
+
+    public function postParam(string $name, $defaultValue = null);
 }

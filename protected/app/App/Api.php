@@ -1,32 +1,39 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace app\App;
 
 /**
- * Description of Api
- *
- * @author agajvery
+ * @author haivoronskyi.oleksandr@gmail.com
  */
 class Api extends Base
 {
+    /**
+     * run application
+     */
     public function run()
     {
         $this->buildController();
     }
 
+    /**
+     * Build and call controller
+     * @throws \Error
+     */
     protected function buildController()
     {
-        $result = $this->getService('urlManager')->parseUrl();
+        $urlManager = $this->getService('urlManager');
+        $result = $urlManager->parseUrl();
         
         if (is_null($result)) {
             throw new \Error('Page doen\'t found', 404);
         }
-        echo $this->getService('request')->pathInfo();
+        list($controller, $action) = explode('/', $result);
+        $controllerClass = ($this->controllerDir . '\\' . ucfirst($controller));
+
+        if (class_exists($controllerClass)) {
+            $actionMethod = ('action' . ucfirst($action));
+            $controller = new $controllerClass();
+            call_user_func_array([$controller, $actionMethod], $urlManager->getParams());
+        }
     }
 }
