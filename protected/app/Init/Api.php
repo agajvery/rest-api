@@ -24,6 +24,7 @@ class Api extends Base
 
     /**
      * call before run
+     * set exception and error handler
      * @return type
      */
     protected function doRun()
@@ -43,12 +44,13 @@ class Api extends Base
      */
     private function exceptionHandler(\Throwable $exception)
     {
-        $errno = $exception->getCode();
+        $code = $exception->getCode();
         $errstr = $exception->getMessage();
         $errfile = $exception->getFile();
         $errline = $exception->getLine();
+        $errno = '';
 
-        $this->errroHandler($errno, $errstr, $errfile, $errline);
+        $this->errroHandler($errno, $errstr, $errfile, $errline, $code);
     }
 
     /**
@@ -57,8 +59,9 @@ class Api extends Base
      * @param string $errstr
      * @param string $errfile
      * @param string $errline
+     * @param string $code
      */
-    private function errroHandler(string $errno, string $errstr, string $errfile, string $errline)
+    private function errroHandler(string $errno, string $errstr, string $errfile, string $errline, string $code = '503')
     {
         $result = ['error_message' => $errstr];
         if ($this->isDebug === true) {
@@ -69,7 +72,12 @@ class Api extends Base
                 'errline' => $errline
             ];
         }
-        header('HTTP/1.1 503 Service Temporarily Unavailable');
+        if ($code == '503') {
+            header('HTTP/1.1 503 Service Temporarily Unavailable');
+        }
+        if ($code == '404') {
+            header('HTTP/1.1 404 Not Found');
+        }
         echo json_encode($result);
         exit();
     }

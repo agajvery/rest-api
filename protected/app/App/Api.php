@@ -25,7 +25,7 @@ class Api extends Base
         $result = $urlManager->parseUrl();
         
         if (is_null($result)) {
-            throw new \Error('Page doen\'t found', 404);
+            throw new \Exception('Page Not Found', 404);
         }
         list($controller, $action) = explode('/', $result);
         $controllerClass = ($this->controllerDir . '\\' . ucfirst($controller));

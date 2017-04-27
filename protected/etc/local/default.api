@@ -1,9 +1,10 @@
 <?php
-
-return [
-    'db' => [
-        'host' => 'localhost',
-        'password' => 'root',
-        'user' => 'root',
-    ]
-];
+    return [
+        'servise' => [
+            'db' => [
+                'host' => 'localhost',
+                'password' => 'root',
+                'user' => 'root',
+            ],
+        ],
+    ];
